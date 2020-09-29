@@ -1,0 +1,7 @@
+*.sw?
+.bundle
+roadmap.md
+zeus.json
+.overcommit.yml
+NOTES
+tags

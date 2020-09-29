@@ -1,0 +1,15 @@
+[user]
+	name  = Anton Fefilov
+	email = atomdev@icloud.com
+[alias]
+	last  = log -1 HEAD
+  rmall = !git rm $(git ls-files -d)
+[core]
+	excludesfile = /home/haul/.gitignore
+[merge]
+  tool = vimdiff
+  conflictstyle = diff3
+[diff]
+  tool = vimdiff
+[init]
+	templatedir = ~/.git_template
