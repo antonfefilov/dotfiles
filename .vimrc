@@ -49,6 +49,11 @@ set encoding=utf-8
 set showcmd               " display incomplete commands
 filetype plugin indent on " load file type plugins + indentation
 
+"" Support for wide screens
+if has('mouse_sgr')
+  set ttymouse=sgr
+endif
+
 " OmniFunc
 set omnifunc=syntaxcomplete#Complete
 " au FileType ruby,eruby setl ofu=rubycomplete#Complete
