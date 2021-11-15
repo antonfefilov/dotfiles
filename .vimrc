@@ -1,10 +1,65 @@
-execute pathogen#infect()
+set nocompatible " choose no compatibility with legacy vi
+filetype off
 
-set nocompatible                " choose no compatibility with legacy vi
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugins
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'preservim/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'flazz/vim-colorschemes'
+" Plugin 'lifepillar/vim-solarized8'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
+Plugin 'tpope/vim-eunuch'
+Plugin 'slim-template/vim-slim'
+Plugin 'kchmck/vim-coffee-script'
+" supertab
+Plugin 'ervandew/supertab'
+" YouCompleteMe
+Plugin 'Valloric/YouCompleteMe'
+" ultisnips
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+" tagbar
+Plugin 'preservim/tagbar'
+" ALE
+Plugin 'dense-analysis/ale'
+" Gitgutter
+Plugin 'airblade/vim-gitgutter'
+" Running tests from vim
+Plugin 'thoughtbot/vim-rspec'
+
+call vundle#end()
+
 syntax on
 set encoding=utf-8
-set showcmd                     " display incomplete commands
-filetype plugin indent on       " load file type plugins + indentation
+set showcmd               " display incomplete commands
+filetype plugin indent on " load file type plugins + indentation
+
+"" Support for wide screens
+if has('mouse_sgr')
+  set ttymouse=sgr
+endif
+
+" OmniFunc
+set omnifunc=syntaxcomplete#Complete
+" au FileType ruby,eruby setl ofu=rubycomplete#Complete
+" au FileType html,xhtml setl ofu=htmlcomplete#CompleteTags
+" au FileType c setl ofu=ccomplete#CompleteCpp
+" au FileType css setl ofu=csscomplete#CompleteCSS
 
 "" Whitespace
 set nowrap                      " don't wrap lines
@@ -15,16 +70,17 @@ match ErrorMsg '\s\+$'          " mark trailing spaces as error
 
 "" Remove trailing spaces with <Leader>rtw
 nnoremap <Leader>rtw :%s/\s\+$//e<CR>
+"" Auto remove trailing spaces before save
 autocmd BufWritePre * :%s/\s\+$//e
 
 "" Searching
-set hlsearch                    " highlight matches
-set incsearch                   " incremental searching
-set ignorecase                  " searches are case insensitive...
-set smartcase                   " ... unless they contain at least one capital letter
+set hlsearch   " highlight matches
+set incsearch  " incremental searching
+set ignorecase " searches are case insensitive...
+set smartcase  " ... unless they contain at least one capital letter
 
 map <Leader>n :NERDTreeToggle<CR>
-nnoremap <silent> <F8> :TlistToggle<CR>
+nnoremap <silent> <F8> :TagbarToggle<CR>
 
 " CtrlP
 set runtimepath^=~/.vim/bundle/ctrlp.vim
@@ -37,7 +93,6 @@ map <Leader>s :w<CR>:call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
-"" let g:rspec_command = "compiler rspec | set makeprg=zeus | Make rspec {spec}"
 let g:rspec_command = "Dispatch! RUBYOPT='-W0' bin/rspec {spec}"
 
 "" For understanding commands when in russian localization
@@ -46,18 +101,26 @@ set iminsert=0
 imap <F12> 
 cmap <F12> 
 
-"" This is for best coloring
-if $COLORTERM == 'gnome-terminal'
-  set t_Co=256
-endif
+" if $ITERM_PROFILE == 'Solarized Dark'
+"   set background=dark
+" else
+"   set background=light
+" endif
+set background=light
 
-if has('gui_running')
-  set background=light
-  colorscheme solarized
-else
-  set background=dark
-  colorscheme spacegray
-endif
+colorscheme solarized " before solarized I used colorscheme spacegray
+
+" airline
+let g:airline#extensions#keymap#enabled = '0'
+let g:airline_theme='solarized'
+let g:airline_powerline_fonts = 1
+
+" if &background == 'dark'
+"   let g:airline_solarized_bg='dark'
+" else
+"   let g:airline_solarized_bg='light'
+" endif
+let g:airline_solarized_bg='light'
 
 "" For better displaying wrapped lines
 set showbreak=↪
@@ -110,21 +173,13 @@ nnoremap <C-l> <C-w>l
 "" javascript goodies
 let g:javascript_plugin_flow = 1        " pangloss/vim-javascript
 let g:jsx_ext_required = 0              " mxw/vim-jsx
-let g:spacegray_underline_search = 1    " spacegray.vim
-let g:spacegray_italicize_comments = 1  " spacegray.vim
+" let g:spacegray_underline_search = 1    " spacegray.vim
+" let g:spacegray_italicize_comments = 1  " spacegray.vim
 let g:ale_lint_on_save = 1              " w0rp/ale
 let g:ale_lint_on_text_changed = 0      " w0rp/ale
 
-" airline
-let g:airline#extensions#keymap#enabled = '0'
-
-" ultisnips
-let g:UltiSnipsExpandTrigger       = "<C-l>"
-let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-
-" put a new line after line with cursor
-map <Enter> o<ESC>
+" " put a new line after line with cursor
+" map <Enter> o<ESC>
 
 " Disable highlights when press <leader><cr>
 map <silent> <leader><cr> :noh<cr>
@@ -149,11 +204,26 @@ map <leader>z :Goyo<cr>
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
+" ultisnips
+" let g:UltiSnipsExpandTrigger       = "<C-l>"
+" let g:UltiSnipsJumpForwardTrigger  = "<C-j>"
+" let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 " LSP servers
 let g:ycm_language_server = [
   \ {
   \   'name': 'ruby',
-  \   'cmdline': [ expand( '/home/haul/.rbenv/versions/2.7.0/bin/solargraph'  ), 'stdio'  ],
+  \   'cmdline': [ expand( '~/.rbenv/versions/2.7.0/bin/solargraph'  ), 'stdio'  ],
   \   'filetypes': [ 'ruby'  ],
   \ },
   \ ]
