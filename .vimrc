@@ -13,9 +13,10 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'preservim/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'flazz/vim-colorschemes'
+" Plugin 'flazz/vim-colorschemes'
+Plugin 'arcticicestudio/nord-vim'
 " Plugin 'lifepillar/vim-solarized8'
-Plugin 'altercation/vim-colors-solarized'
+" Plugin 'altercation/vim-colors-solarized'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-commentary'
@@ -41,6 +42,10 @@ Plugin 'dense-analysis/ale'
 Plugin 'airblade/vim-gitgutter'
 " Running tests from vim
 Plugin 'thoughtbot/vim-rspec'
+" vim-bookmarks
+Plugin 'MattesGroeger/vim-bookmarks'
+" MRU
+Plugin 'yegappan/mru'
 
 call vundle#end()
 
@@ -56,7 +61,7 @@ endif
 
 " OmniFunc
 set omnifunc=syntaxcomplete#Complete
-" au FileType ruby,eruby setl ofu=rubycomplete#Complete
+au FileType ruby,eruby setl ofu=rubycomplete#Complete
 " au FileType html,xhtml setl ofu=htmlcomplete#CompleteTags
 " au FileType c setl ofu=ccomplete#CompleteCpp
 " au FileType css setl ofu=csscomplete#CompleteCSS
@@ -86,6 +91,7 @@ nnoremap <silent> <F8> :TagbarToggle<CR>
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_map = '<C-p>'
 let g:ctrlp_cmd = 'CtrlP'
+nnoremap <leader>. :CtrlPTag<cr>
 
 " Rspec.vim mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -93,7 +99,8 @@ map <Leader>s :w<CR>:call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
-let g:rspec_command = "Dispatch! RUBYOPT='-W0' bin/rspec {spec}"
+let g:rspec_command = "Dispatch! bin/rspec {spec}"
+" let g:rspec_runner = 'os_x_iterm2'
 
 "" For understanding commands when in russian localization
 set keymap=russian-jcukenwin
@@ -106,13 +113,14 @@ cmap <F12> 
 " else
 "   set background=light
 " endif
-set background=light
+" set background=dark
 
-colorscheme solarized " before solarized I used colorscheme spacegray
+" colorscheme solarized " before solarized I used colorscheme spacegray
+colorscheme nord
 
 " airline
 let g:airline#extensions#keymap#enabled = '0'
-let g:airline_theme='solarized'
+" let g:airline_theme='minimalist'
 let g:airline_powerline_fonts = 1
 
 " if &background == 'dark'
@@ -120,7 +128,7 @@ let g:airline_powerline_fonts = 1
 " else
 "   let g:airline_solarized_bg='light'
 " endif
-let g:airline_solarized_bg='light'
+" let g:airline_solarized_bg='dark'
 
 "" For better displaying wrapped lines
 set showbreak=↪
@@ -175,8 +183,12 @@ let g:javascript_plugin_flow = 1        " pangloss/vim-javascript
 let g:jsx_ext_required = 0              " mxw/vim-jsx
 " let g:spacegray_underline_search = 1    " spacegray.vim
 " let g:spacegray_italicize_comments = 1  " spacegray.vim
+
+"" ALE
 let g:ale_lint_on_save = 1              " w0rp/ale
 let g:ale_lint_on_text_changed = 0      " w0rp/ale
+""show lint errors in the status bar
+let g:airline#extensions#ale#enabled = 1
 
 " " put a new line after line with cursor
 " map <Enter> o<ESC>
